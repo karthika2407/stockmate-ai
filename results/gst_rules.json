@@ -1,0 +1,709 @@
+{
+  "protocol": "Rule-engine benchmark, not a field-accuracy benchmark. There is no public corpus of annotated Indian GST invoices and the official rate sources (pib.gov.in, taxinformation.cbic.gov.in) could not be fetched, so no number here says whether our rate schedule is factually correct. Synthetic bills are generated from the schedule the engine is then judged against: part 1 tests longest-prefix lookup against an independent brute-force scan, part 2 perturbs a correct charged rate to each other legal slab and scores detection, part 3 sweeps a known paise error through the printed tax and reports the smallest error caught on every bill, part 4 confirms correctly built bills raise no GST failure. Rate correctness is out of scope and is declared unverified in the reference data.",
+  "schedule": {
+    "schedule_version": "gst_rates.csv@8992285643d9 (52 rows)",
+    "source_path": "E:\\Claude\\StockMate_AI\\repo\\data\\reference\\gst_rates.csv",
+    "rows": 52,
+    "prefixes": 26,
+    "verified_rows": 0,
+    "unverified_rows": 52,
+    "source_note": "Schedule gst_rates.csv@8992285643d9 (52 rows): reference data, 52 of 52 rows are marked unverified because they were not traced to a primary CBIC document. Refresh data/reference/gst_rates.csv against the current CBIC schedule before relying on a rate finding."
+  },
+  "as_of": "2026-04-01",
+  "lookup": {
+    "direct_prefix_rows": 52,
+    "direct_prefix_resolved": 52,
+    "direct_resolution_rate": 1.0,
+    "padded_to_8_digit_probes": 156,
+    "padded_matching_brute_force": 156,
+    "fallback_agreement_rate": 1.0,
+    "fallback_examples": [
+      {
+        "hsn": "10060000",
+        "resolved_prefix": "1006",
+        "expected_prefix": "1006"
+      },
+      {
+        "hsn": "10061111",
+        "resolved_prefix": "1006",
+        "expected_prefix": "1006"
+      },
+      {
+        "hsn": "10069999",
+        "resolved_prefix": "1006",
+        "expected_prefix": "1006"
+      },
+      {
+        "hsn": "10060000",
+        "resolved_prefix": "1006",
+        "expected_prefix": "1006"
+      },
+      {
+        "hsn": "10061111",
+        "resolved_prefix": "1006",
+        "expected_prefix": "1006"
+      },
+      {
+        "hsn": "10069999",
+        "resolved_prefix": "1006",
+        "expected_prefix": "1006"
+      },
+      {
+        "hsn": "11010000",
+        "resolved_prefix": "1101",
+        "expected_prefix": "1101"
+      },
+      {
+        "hsn": "11011111",
+        "resolved_prefix": "1101",
+        "expected_prefix": "1101"
+      }
+    ],
+    "unknown_4_digit_codes_tried": 9976,
+    "unknown_returned_none": 9976,
+    "unknown_none_rate": 1.0
+  },
+  "rate_mismatch": {
+    "label": "rule-engine detection of a perturbed rate, not field accuracy",
+    "active_entries": 26,
+    "legal_slabs": [
+      "0",
+      "5",
+      "18",
+      "40"
+    ],
+    "cases": 78,
+    "detected": 78,
+    "detection_rate": 1.0,
+    "by_rate_pair": {
+      "0 -> 18": {
+        "cases": 3,
+        "detected": 3,
+        "rate": 1.0
+      },
+      "0 -> 40": {
+        "cases": 3,
+        "detected": 3,
+        "rate": 1.0
+      },
+      "0 -> 5": {
+        "cases": 3,
+        "detected": 3,
+        "rate": 1.0
+      },
+      "18 -> 0": {
+        "cases": 1,
+        "detected": 1,
+        "rate": 1.0
+      },
+      "18 -> 40": {
+        "cases": 1,
+        "detected": 1,
+        "rate": 1.0
+      },
+      "18 -> 5": {
+        "cases": 1,
+        "detected": 1,
+        "rate": 1.0
+      },
+      "40 -> 0": {
+        "cases": 3,
+        "detected": 3,
+        "rate": 1.0
+      },
+      "40 -> 18": {
+        "cases": 3,
+        "detected": 3,
+        "rate": 1.0
+      },
+      "40 -> 5": {
+        "cases": 3,
+        "detected": 3,
+        "rate": 1.0
+      },
+      "5 -> 0": {
+        "cases": 19,
+        "detected": 19,
+        "rate": 1.0
+      },
+      "5 -> 18": {
+        "cases": 19,
+        "detected": 19,
+        "rate": 1.0
+      },
+      "5 -> 40": {
+        "cases": 19,
+        "detected": 19,
+        "rate": 1.0
+      }
+    }
+  },
+  "tax_recompute": {
+    "tolerance_rule": "max(100, 50 x taxed lines) paise",
+    "error_sweep_paise": [
+      1,
+      2,
+      5,
+      10,
+      25,
+      50,
+      75,
+      100,
+      101,
+      125,
+      150,
+      151,
+      200,
+      250,
+      251,
+      301,
+      500,
+      501,
+      1000,
+      5000
+    ],
+    "by_line_count": {
+      "1": {
+        "tolerance_paise": 100,
+        "smallest_error_always_caught_paise": 101,
+        "by_error_paise": {
+          "1": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "2": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "5": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "10": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "25": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "50": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "75": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "100": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "101": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "125": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "150": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "151": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "200": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "250": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "251": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "301": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "500": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "501": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "1000": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "5000": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          }
+        }
+      },
+      "2": {
+        "tolerance_paise": 100,
+        "smallest_error_always_caught_paise": 101,
+        "by_error_paise": {
+          "1": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "2": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "5": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "10": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "25": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "50": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "75": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "100": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "101": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "125": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "150": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "151": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "200": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "250": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "251": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "301": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "500": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "501": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "1000": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "5000": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          }
+        }
+      },
+      "3": {
+        "tolerance_paise": 150,
+        "smallest_error_always_caught_paise": 151,
+        "by_error_paise": {
+          "1": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "2": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "5": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "10": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "25": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "50": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "75": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "100": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "101": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "125": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "150": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "151": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "200": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "250": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "251": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "301": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "500": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "501": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "1000": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "5000": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          }
+        }
+      },
+      "5": {
+        "tolerance_paise": 250,
+        "smallest_error_always_caught_paise": 251,
+        "by_error_paise": {
+          "1": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "2": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "5": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "10": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "25": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "50": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "75": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "100": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "101": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "125": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "150": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "151": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "200": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "250": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "251": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "301": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "500": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "501": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "1000": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "5000": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          }
+        }
+      },
+      "10": {
+        "tolerance_paise": 500,
+        "smallest_error_always_caught_paise": 501,
+        "by_error_paise": {
+          "1": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "2": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "5": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "10": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "25": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "50": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "75": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "100": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "101": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "125": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "150": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "151": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "200": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "250": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "251": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "301": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "500": {
+            "cases": 5,
+            "detected": 0,
+            "rate": 0.0
+          },
+          "501": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "1000": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          },
+          "5000": {
+            "cases": 5,
+            "detected": 5,
+            "rate": 1.0
+          }
+        }
+      }
+    }
+  },
+  "false_alarms": {
+    "clean_bills": 51,
+    "gst_failures": 0,
+    "offending_bills": []
+  },
+  "runtime_seconds": 0.39,
+  "environment": {
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "executable": "E:\\Claude\\StockMate_AI\\.venv\\Scripts\\python.exe"
+  }
+}

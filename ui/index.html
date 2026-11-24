@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StockMate AI</title>
+<link rel="stylesheet" href="/ui/static/app.css">
+</head>
+<body>
+<div class="app">
+
+  <div class="brand">
+    <span class="name">StockMate AI</span>
+    <span class="tag">Profit guardian for small shops</span>
+  </div>
+
+  <header class="head">
+    <span class="title">Overview</span>
+    <span class="spacer"></span>
+    <span class="health"><span class="dot" id="health-dot"></span><span id="health-text">Checking service&hellip;</span></span>
+    <span class="channel-note" id="channel-note">Channel status unavailable</span>
+  </header>
+
+  <nav class="nav">
+    <span class="group">Workspace</span>
+    <a href="/ui/index.html" class="active">Overview</a>
+    <a href="/ui/chat.html">Chat</a>
+    <a href="/ui/dashboard.html">Dashboard</a>
+    <span class="nav-foot">Code decides, the language layer only explains. Every rupee shown has a stored computation behind it.</span>
+  </nav>
+
+  <main class="main">
+    <div class="wrap">
+
+      <section class="card hero">
+        <h1>Money found, released and protected</h1>
+        <p class="lede">
+          A shopkeeper sends a supplier bill. StockMate extracts it, re-does the arithmetic and the
+          GST, audits the prices against what this shop paid before, finds the cash sitting in slow
+          or expiring stock, and proposes an order that fits the cash actually available this week.
+        </p>
+        <p class="rule">House rule: code decides, the language layer only explains.</p>
+      </section>
+
+      <section class="buckets">
+        <div class="card bucket">
+          <h3>Money found</h3>
+          <p>Overcharges, arithmetic slips and GST errors on supplier bills, each one traceable to the line it came from.</p>
+        </div>
+        <div class="card bucket">
+          <h3>Money released</h3>
+          <p>Capital locked in stock that is turning slowly or has stopped moving altogether, and can be freed.</p>
+        </div>
+        <div class="card bucket">
+          <h3>Money protected</h3>
+          <p>Value that will be lost at expiry unless the stock clears first, flagged while there is still time to act.</p>
+        </div>
+      </section>
+
+      <section class="entry-grid">
+        <a class="card entry" href="/ui/chat.html">
+          <h3>Chat</h3>
+          <p>The conversational front door, as a shopkeeper would use it. Ask what to buy, what is trapped, and what was found on the bills.</p>
+        </a>
+        <a class="card entry" href="/ui/dashboard.html">
+          <h3>Dashboard</h3>
+          <p>Headline figures, every finding with its working shown, and the order plan inside a cash budget.</p>
+        </a>
+      </section>
+
+      <section class="card facts" id="facts">
+        <div class="loading">Loading service figures&hellip;</div>
+      </section>
+
+    </div>
+  </main>
+
+</div>
+
+<script>
+(function () {
+  var dot = document.getElementById('health-dot');
+  var text = document.getElementById('health-text');
+  var note = document.getElementById('channel-note');
+  var facts = document.getElementById('facts');
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  fetch('/api/health').then(function (r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  }).then(function (h) {
+    dot.className = 'dot live';
+    text.textContent = 'Service ' + (h.status || 'ok') + ' · v' + (h.version || '?');
+    if (h.channel) note.textContent = 'Channel: ' + h.channel;
+    facts.innerHTML =
+      '<div><b>' + esc(h.skus) + '</b>SKUs tracked</div>' +
+      '<div><b>' + esc(h.bills_seen) + '</b>Bills processed</div>' +
+      '<div><b>' + esc(h.ledger_entries) + '</b>Stored computations</div>';
+  }).catch(function (err) {
+    dot.className = 'dot down';
+    text.textContent = 'Service unreachable';
+    note.textContent = 'Channel status unavailable while the service is unreachable.';
+    facts.innerHTML =
+      '<div class="error" style="flex:1 1 auto"><strong>Cannot reach the StockMate service.</strong>' +
+      'GET /api/health failed (' + esc(err.message) + '). Start the API and reload this page.</div>';
+  });
+})();
+</script>
+</body>
+</html>

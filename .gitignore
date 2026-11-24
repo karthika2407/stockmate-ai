@@ -1,0 +1,32 @@
+# Datasets are downloaded by scripts/fetch_data.py, not committed.
+# Online Retail II is 43 MB and CORD-v2 is about 2 GB; both are public and
+# their provenance is recorded in data/PROVENANCE.json.
+_datasets/
+data/raw/
+*.xlsx
+*.parquet
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local scratch
+_notes/
+*.log

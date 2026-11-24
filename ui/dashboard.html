@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StockMate AI &middot; Dashboard</title>
+<link rel="stylesheet" href="/ui/static/app.css">
+</head>
+<body>
+<div class="app">
+
+  <div class="brand">
+    <span class="name">StockMate AI</span>
+    <span class="tag">Profit guardian for small shops</span>
+  </div>
+
+  <header class="head">
+    <span class="title">Dashboard</span>
+    <span class="spacer"></span>
+    <span class="health"><span class="dot" id="health-dot"></span><span id="health-text">Checking service&hellip;</span></span>
+    <span class="channel-note" id="channel-note">Channel status unavailable</span>
+  </header>
+
+  <nav class="nav">
+    <span class="group">Workspace</span>
+    <a href="/ui/index.html">Overview</a>
+    <a href="/ui/chat.html">Chat</a>
+    <a href="/ui/dashboard.html" class="active">Dashboard</a>
+    <span class="nav-foot">Code decides, the language layer only explains. Every rupee shown has a stored computation behind it.</span>
+  </nav>
+
+  <main class="main">
+    <div class="wrap">
+
+      <section class="section">
+        <div class="section-head">
+          <h2>Outcome this period</h2>
+          <span class="hint" id="as-of"></span>
+        </div>
+        <div id="stats"><div class="card loading">Loading headline figures&hellip;</div></div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <h2>Bill findings</h2>
+          <span class="hint">Select a row to see the working behind the amount.</span>
+        </div>
+        <div id="bill-findings"><div class="card loading">Loading findings&hellip;</div></div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <h2>Cash traps</h2>
+          <span class="hint">Capital held in slow, dead or expiring stock.</span>
+        </div>
+        <div id="trap-totals"></div>
+        <div id="cash-traps"><div class="card loading">Loading cash traps&hellip;</div></div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <h2>Order plan</h2>
+          <span class="hint">Quantities are chosen by the planner, then trimmed to the budget.</span>
+        </div>
+        <div class="card">
+          <div class="planner-controls">
+            <div class="field">
+              <label for="budget">Cash budget (Rs)</label>
+              <input id="budget" type="number" min="0" step="100" value="15000">
+            </div>
+            <div class="field">
+              <label for="service">Service level</label>
+              <select id="service">
+                <option value="0.90">0.90</option>
+                <option value="0.95" selected>0.95</option>
+                <option value="0.99">0.99</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="review">Review period (days)</label>
+              <input id="review" type="number" min="1" max="60" step="1" value="7">
+            </div>
+          </div>
+          <div id="plan"><div class="loading">Loading plan&hellip;</div></div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+</div>
+<script src="/ui/static/dashboard.js"></script>
+</body>
+</html>

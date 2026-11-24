@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StockMate AI &middot; Chat</title>
+<link rel="stylesheet" href="/ui/static/app.css">
+</head>
+<body>
+<div class="app">
+
+  <div class="brand">
+    <span class="name">StockMate AI</span>
+    <span class="tag">Profit guardian for small shops</span>
+  </div>
+
+  <header class="head">
+    <span class="title">Chat</span>
+    <span class="spacer"></span>
+    <span class="health"><span class="dot" id="health-dot"></span><span id="health-text">Checking service&hellip;</span></span>
+    <span class="channel-note" id="channel-note">Channel status unavailable</span>
+  </header>
+
+  <nav class="nav">
+    <span class="group">Workspace</span>
+    <a href="/ui/index.html">Overview</a>
+    <a href="/ui/chat.html" class="active">Chat</a>
+    <a href="/ui/dashboard.html">Dashboard</a>
+    <span class="nav-foot">Code decides, the language layer only explains. Every rupee shown has a stored computation behind it.</span>
+  </nav>
+
+  <main class="main">
+    <div class="wrap">
+
+      <div class="banner">
+        <span class="tagword">Demo channel</span>
+        <span>
+          Simulated WhatsApp channel. No WhatsApp Business account is connected.
+          Messages here are posted to this application's own API from this browser; nothing
+          leaves this machine and no third-party messaging service is involved.
+        </span>
+      </div>
+
+      <div class="chat-layout">
+
+        <section class="card phone">
+          <div class="phone-head">
+            <div>
+              <div class="who">StockMate</div>
+              <div class="sub">Simulated channel &middot; shop owner thread</div>
+            </div>
+          </div>
+          <div class="stream" id="stream" aria-live="polite" aria-label="Conversation"></div>
+          <div class="chips" id="chips"></div>
+          <form class="composer" id="composer" autocomplete="off">
+            <label class="sr-only" for="entry">Message</label>
+            <input id="entry" type="text" placeholder="Type a message to StockMate" maxlength="400">
+            <button type="submit" id="send">Send</button>
+          </form>
+        </section>
+
+        <aside class="side">
+          <div class="card">
+            <h3>What this thread can answer</h3>
+            <p>The same answering logic that the message webhook uses. Replies are composed from
+              figures the engines have already computed and recorded.</p>
+            <ul>
+              <li>Buying advice for the coming week, inside a cash budget.</li>
+              <li>Cash trapped in slow-moving, dead or expiring stock.</li>
+              <li>What the bill audit found, and on which bill.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Service</h3>
+            <div id="side-health"><div class="loading">Loading&hellip;</div></div>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+  </main>
+
+</div>
+<script src="/ui/static/chat.js"></script>
+</body>
+</html>

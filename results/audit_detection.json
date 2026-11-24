@@ -1,0 +1,161 @@
+{
+  "protocol": "labelled faults injected into real annotated receipts that balance as issued; detection scored against the known fault",
+  "dataset": {
+    "source": "CORD-v2 (naver-clova-ix/cord-v2), CC BY 4.0",
+    "splits": [
+      "test",
+      "validation"
+    ],
+    "receipts": 200,
+    "lines": 472,
+    "receipts_balancing_as_issued": 153,
+    "receipts_inconsistent_as_issued": 47,
+    "inconsistent_share": 0.235
+  },
+  "false_alarms_on_clean_receipts": 0,
+  "overall": {
+    "cases": 619,
+    "detected": 466,
+    "recall": 0.7528
+  },
+  "by_fault_kind": {
+    "price_creep": {
+      "applicable_cases": 152,
+      "detected": 0,
+      "recall": 0.0,
+      "localisation_rate": null,
+      "amount_exact_rate": 0.0,
+      "injected_total_rupees": 607844.64,
+      "reported_total_rupees": 0.0
+    },
+    "line_math": {
+      "applicable_cases": 152,
+      "detected": 152,
+      "recall": 1.0,
+      "localisation_rate": 1.0,
+      "amount_exact_rate": 1.0,
+      "injected_total_rupees": 15637.51,
+      "reported_total_rupees": 15637.51
+    },
+    "subtotal_inflated": {
+      "applicable_cases": 88,
+      "detected": 88,
+      "recall": 1.0,
+      "localisation_rate": null,
+      "amount_exact_rate": 1.0,
+      "injected_total_rupees": 13855.57,
+      "reported_total_rupees": 13856.57
+    },
+    "total_inflated": {
+      "applicable_cases": 146,
+      "detected": 146,
+      "recall": 1.0,
+      "localisation_rate": null,
+      "amount_exact_rate": 0.6644,
+      "injected_total_rupees": 21061.1,
+      "reported_total_rupees": 439674.1
+    },
+    "dropped_discount": {
+      "applicable_cases": 2,
+      "detected": 1,
+      "recall": 0.5,
+      "localisation_rate": null,
+      "amount_exact_rate": 0.5,
+      "injected_total_rupees": 79400.0,
+      "reported_total_rupees": 60000.0
+    },
+    "duplicate_line": {
+      "applicable_cases": 79,
+      "detected": 79,
+      "recall": 1.0,
+      "localisation_rate": 1.0,
+      "amount_exact_rate": 1.0,
+      "injected_total_rupees": 3931722.0,
+      "reported_total_rupees": 3931722.0
+    }
+  },
+  "ablation": {
+    "arithmetic_only": {
+      "tiers": [
+        "arithmetic"
+      ],
+      "by_fault_kind": {
+        "price_creep": {
+          "applicable": 152,
+          "detected": 0,
+          "recall": 0.0
+        },
+        "line_math": {
+          "applicable": 152,
+          "detected": 152,
+          "recall": 1.0
+        },
+        "subtotal_inflated": {
+          "applicable": 88,
+          "detected": 88,
+          "recall": 1.0
+        },
+        "total_inflated": {
+          "applicable": 146,
+          "detected": 146,
+          "recall": 1.0
+        },
+        "dropped_discount": {
+          "applicable": 2,
+          "detected": 1,
+          "recall": 0.5
+        },
+        "duplicate_line": {
+          "applicable": 79,
+          "detected": 0,
+          "recall": 0.0
+        }
+      },
+      "overall_recall": 0.6252
+    },
+    "full_verifier": {
+      "tiers": [
+        "arithmetic",
+        "duplicate"
+      ],
+      "by_fault_kind": {
+        "price_creep": {
+          "applicable": 152,
+          "detected": 0,
+          "recall": 0.0
+        },
+        "line_math": {
+          "applicable": 152,
+          "detected": 152,
+          "recall": 1.0
+        },
+        "subtotal_inflated": {
+          "applicable": 88,
+          "detected": 88,
+          "recall": 1.0
+        },
+        "total_inflated": {
+          "applicable": 146,
+          "detected": 146,
+          "recall": 1.0
+        },
+        "dropped_discount": {
+          "applicable": 2,
+          "detected": 1,
+          "recall": 0.5
+        },
+        "duplicate_line": {
+          "applicable": 79,
+          "detected": 79,
+          "recall": 1.0
+        }
+      },
+      "overall_recall": 0.7528
+    }
+  },
+  "runtime_seconds": 0.12,
+  "environment": {
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26300-SP0"
+  }
+}

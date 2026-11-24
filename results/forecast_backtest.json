@@ -1,0 +1,105 @@
+{
+  "config": {
+    "horizon_days": 7,
+    "n_origins": 3,
+    "origin_gap_days": 21,
+    "min_train_days": 240,
+    "skus": 120,
+    "panel_rows": 83498
+  },
+  "origins": [
+    "2011-10-21",
+    "2011-11-11",
+    "2011-12-02"
+  ],
+  "fit_seconds": 11.22,
+  "methods": {
+    "croston_sba": {
+      "n": 319,
+      "mae": 23.32818385016686,
+      "rmse": 52.195140566050334,
+      "wape": 0.4873542576498788,
+      "smape": 0.540314650118632,
+      "bias": -3.9474293318959663,
+      "bias_pct_of_mean": -0.08246662080630658
+    },
+    "moving_average_28": {
+      "n": 319,
+      "mae": 25.278101209135695,
+      "rmse": 54.01196452409676,
+      "wape": 0.5280904132401508,
+      "smape": 0.5602380122329016,
+      "bias": -3.882892969099864,
+      "bias_pct_of_mean": -0.08111837735178268
+    },
+    "naive": {
+      "n": 319,
+      "mae": 44.304523063143755,
+      "rmse": 93.63069437176807,
+      "wape": 0.9255756078849626,
+      "smape": 0.9913936489345238,
+      "bias": 5.785042543663233,
+      "bias_pct_of_mean": 0.12085660557411097
+    },
+    "seasonal_naive": {
+      "n": 319,
+      "mae": 25.05463502015226,
+      "rmse": 53.69916998679596,
+      "wape": 0.5234219315725953,
+      "smape": 0.5990434061952118,
+      "bias": -2.1965965069413342,
+      "bias_pct_of_mean": -0.04588958432737376
+    },
+    "stockmate_global": {
+      "n": 319,
+      "mae": 25.477512825310068,
+      "rmse": 55.65704262432413,
+      "wape": 0.5322563654973699,
+      "smape": 0.5629854735061679,
+      "bias": -0.1355602626619256,
+      "bias_pct_of_mean": -0.002832019483417814
+    },
+    "zero": {
+      "n": 319,
+      "mae": 47.86699507389163,
+      "rmse": 89.65208058772187,
+      "wape": 1.0,
+      "smape": 1.974921630094044,
+      "bias": -47.86699507389163,
+      "bias_pct_of_mean": -1.0
+    }
+  },
+  "skill_vs_seasonal_naive": {
+    "croston_sba": 0.0689,
+    "moving_average_28": -0.0089,
+    "naive": -0.7683,
+    "seasonal_naive": 0.0,
+    "stockmate_global": -0.0169,
+    "zero": -0.9105
+  },
+  "dataset": {
+    "source": "UCI Online Retail II (dataset 502), DOI 10.24432/C5CG6D",
+    "raw_rows": 1067371,
+    "cancellation_rows": 19494,
+    "non_product_rows": 6093,
+    "non_positive_price_rows": 6116,
+    "rows_outside_market": 83671,
+    "market": "United Kingdom",
+    "missing_description_rows": 0,
+    "clean_rows": 971491,
+    "skus": 4881,
+    "invoices": 42778,
+    "first_day": "2009-12-01",
+    "last_day": "2011-12-09",
+    "gross_units": 9370949,
+    "returned_units": 359949
+  },
+  "runtime_seconds": 11.47,
+  "load_seconds": 5.5,
+  "environment": {
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "processor": "AMD64 Family 23 Model 104 Stepping 1, AuthenticAMD"
+  },
+  "zero_demand_day_share": 0.4007
+}
