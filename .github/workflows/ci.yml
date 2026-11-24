@@ -22,10 +22,26 @@ jobs:
           python-version: "3.12"
           cache: pip
 
+      # We pin opencv-python-headless, which needs no display libraries, but
+      # rapidocr-onnxruntime depends on the full opencv-python and pip installs
+      # it alongside. Whichever lands last provides cv2, so the runner needs the
+      # system libraries the full build links against or `import cv2` fails with
+      # libGL.so.1 and pytest exits during collection. The Dockerfile installs
+      # the same two packages for the same reason.
+      - name: Install system libraries for OpenCV
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libgl1 libglib2.0-0
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+
+      - name: Show what is installed
+        run: |
+          python -c "import cv2, sys; print('cv2', cv2.__version__, 'on', sys.version)"
+          pip list
 
       - name: Run tests
         run: pytest -q
