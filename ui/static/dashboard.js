@@ -230,7 +230,9 @@
 
     var bits = [];
     if (d.as_of) bits.push('as of ' + d.as_of);
-    if (d.bills_seen !== undefined) bits.push(d.bills_seen + ' bills seen');
+    if (d.bills_seen !== undefined) {
+      bits.push(d.bills_seen + (Number(d.bills_seen) === 1 ? ' bill seen' : ' bills seen'));
+    }
     if (d.skus !== undefined) bits.push(d.skus + ' SKUs');
     asOf.textContent = bits.join(' · ');
 

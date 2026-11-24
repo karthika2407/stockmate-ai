@@ -357,8 +357,8 @@ a { color: var(--accent); }
   color: #fff;
 }
 
-.finding .ftitle { font-weight: 600; font-size: 14.5px; }
-.finding .ftext { font-size: 13.5px; color: var(--ink-soft); margin-top: 2px; }
+.finding .ftitle { display: block; font-weight: 600; font-size: 14.5px; }
+.finding .ftext { display: block; font-size: 13.5px; color: var(--ink-soft); margin-top: 2px; }
 .finding .famount { font-size: 16px; white-space: nowrap; }
 .finding .famount.found     { color: var(--accent); }
 .finding .famount.released  { color: var(--good); }

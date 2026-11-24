@@ -315,8 +315,25 @@ def classify_rows(result: OcrResult) -> list[ParsedRow]:
 
 
 def _looks_like_noise(description: str) -> bool:
+    """Decide whether a row's words describe something other than an item.
+
+    Matching is per word rather than on the row as a whole, because the short
+    entries in the list are also fragments of ordinary product names: a plain
+    substring test rejects a hotel's coffee for containing "tel" and a numbered
+    burger for containing "no.".  Multi-word and punctuated entries are matched
+    as substrings, since those cannot collide in the same way.
+    """
     low = description.lower()
-    return any(token in low for token in _NOT_AN_ITEM)
+    words = re.split(r"[\s,;:|]+", low)
+    for entry in _NOT_AN_ITEM:
+        if "." in entry or " " in entry:
+            if entry in low:
+                return True
+            continue
+        for word in words:
+            if word == entry or (len(entry) >= 5 and word.startswith(entry)):
+                return True
+    return False
 
 
 def _derive_unit_price(line_total: Money, quantity: Decimal) -> Money | None:
