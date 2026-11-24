@@ -235,6 +235,51 @@ def ask(payload: dict) -> dict:
     return {"reply": STATE.answer(text)}
 
 
+#: A supplier bill for the demonstration, in the same shape the extractor
+#: produces. It is a fixture, not a measurement: the rice line is priced above
+#: what the fixture's earlier bills charged so that the auditor has something
+#: real to find, and the printed total is a few rupees above the lines so that
+#: the arithmetic check has something to say as well.
+DEMO_BILL = {
+    "bill_id": "demo-today",
+    "supplier_name": "Anand Distributors",
+    "invoice_number": "AD/2026/1184",
+    "lines": [
+        {"description": "Sona Masoori Rice 5kg", "quantity": "10",
+         "unit_price": "348.00", "line_total": "3480.00", "hsn": "1006"},
+        {"description": "Sunflower Oil 1L", "quantity": "12",
+         "unit_price": "139.00", "line_total": "1668.00", "hsn": "1512"},
+        {"description": "Sugar 1kg", "quantity": "20",
+         "unit_price": "46.00", "line_total": "920.00", "hsn": "1701"},
+        {"description": "Tea Dust 250g", "quantity": "24",
+         "unit_price": "118.00", "line_total": "2832.00", "hsn": "0902"},
+        {"description": "Sugar 1kg", "quantity": "20",
+         "unit_price": "46.00", "line_total": "920.00", "hsn": "1701"},
+    ],
+    "subtotal": "9820.00",
+    "grand_total": "9852.00",
+}
+
+
+@app.post("/api/demo/bill")
+def demo_bill() -> dict:
+    """Audit a prepared supplier bill, for demonstrations.
+
+    This exists so the interface can be shown without a camera pointed at a
+    paper bill. The payload is a fixture and is labelled as one in the response,
+    so nothing downstream can mistake it for a measurement.
+    """
+    from datetime import date as _date
+
+    payload = dict(DEMO_BILL)
+    payload["invoice_date"] = _date.today().isoformat()
+    payload["bill_id"] = f"demo-{_date.today().isoformat()}-{len(STATE.bills)}"
+    result = _process(bill_from_payload(BillIn(**payload)))
+    result["fixture"] = True
+    result["note"] = "Demonstration bill, not measured data."
+    return result
+
+
 @app.post("/api/reset")
 def reset() -> dict:
     global STATE

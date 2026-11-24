@@ -202,6 +202,7 @@
   var trapTotalsBox = document.getElementById('trap-totals');
   var asOf = document.getElementById('as-of');
 
+  function loadDashboard() {
   fetch('/api/dashboard').then(asJson).then(function (d) {
     var head = d.headline || {};
 
@@ -270,6 +271,43 @@
     trapBox.appendChild(errorBox('Cash traps', err));
     asOf.textContent = '';
   });
+  }
+
+  loadDashboard();
+
+  /* ------------------------------------------------- sample bill audit
+     The demonstration needs a bill to audit without pointing a camera at a
+     piece of paper. The server holds a fixture for this and labels it as one
+     in the response, which is echoed here so nobody watching can mistake it
+     for measured data. */
+  var sampleButton = document.getElementById('audit-sample');
+  var sampleNote = document.getElementById('sample-note');
+  if (sampleButton) {
+    sampleButton.addEventListener('click', function () {
+      sampleButton.disabled = true;
+      sampleButton.textContent = 'Auditing…';
+      if (sampleNote) {
+        sampleNote.hidden = false;
+        sampleNote.textContent = 'Running the pipeline on a sample supplier bill…';
+      }
+      fetch('/api/demo/bill', { method: 'POST' }).then(asJson).then(function (r) {
+        if (sampleNote) {
+          sampleNote.textContent =
+            'Sample bill audited in ' + (r.elapsed_ms || 0) + ' ms. ' +
+            (r.failures || 0) + ' rule failure(s), ' + (r.money_found || '') +
+            ' at stake. This bill is a demonstration fixture, not measured data.';
+        }
+        loadDashboard();
+      }).catch(function (err) {
+        if (sampleNote) {
+          sampleNote.textContent = 'The sample audit failed: ' + (err && err.message ? err.message : err);
+        }
+      }).then(function () {
+        sampleButton.disabled = false;
+        sampleButton.textContent = 'Audit a sample bill';
+      });
+    });
+  }
 
   /* ------------------------------------------------------------- plan */
 

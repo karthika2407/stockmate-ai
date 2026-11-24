@@ -694,3 +694,20 @@ table.plan .sku { font-size: 11.5px; color: var(--ink-faint); font-family: var(-
   .stat .value { font-size: 26px; }
   .msg { max-width: 92%; }
 }
+
+/* Sample-audit button in the Bill findings header. Deliberately quiet: it is a
+   demonstration aid, not a primary action, so it reads as a secondary control. */
+.section-head .btn {
+  margin-left: auto;
+  font: inherit;
+  font-size: 0.82rem;
+  padding: 0.34rem 0.8rem;
+  border: 1px solid var(--line, #d7dce3);
+  border-radius: 7px;
+  background: var(--surface, #fff);
+  color: var(--ink, #1d2733);
+  cursor: pointer;
+}
+.section-head .btn:hover:not(:disabled) { border-color: #9aa6b4; }
+.section-head .btn:disabled { opacity: 0.55; cursor: default; }
+#sample-note { display: block; margin: 0.35rem 0 0.6rem; }
