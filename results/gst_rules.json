@@ -700,7 +700,7 @@
     "gst_failures": 0,
     "offending_bills": []
   },
-  "runtime_seconds": 0.39,
+  "runtime_seconds": 0.17,
   "environment": {
     "python": "3.12.10",
     "platform": "Windows-11-10.0.26300-SP0",

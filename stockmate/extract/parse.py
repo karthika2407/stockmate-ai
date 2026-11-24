@@ -166,10 +166,12 @@ _FUZZY_LABELS: tuple[tuple[str, str], ...] = (
     ("total", "grand_total"),
 )
 
-#: Similarity needed before a mangled word is accepted as a label.  Set from the
-#: corpus: at 0.8 the misreadings seen in practice are caught while ordinary item
-#: names stay below the bar.
-_FUZZY_THRESHOLD = 0.8
+#: Similarity needed before a mangled word is accepted as a label.  Set by
+#: measurement rather than taste: at 0.75 the misreadings actually seen in the
+#: corpus are caught, including SUBTOTAL recognised as SUSTSTAL, while item names
+#: of comparable length such as COASTAL, COCKTAIL and TOTEBAG all score below the
+#: bar against every label in the list.
+_FUZZY_THRESHOLD = 0.75
 
 
 def _fuzzy_keyword(flat: str) -> str | None:
@@ -261,10 +263,6 @@ def classify_rows(result: OcrResult) -> list[ParsedRow]:
     for line in result.lines:
         words = list(line.words) or _synthetic_words(line)
 
-        # The count is identified before the amounts, because a token such as
-        # 2.00 is shaped like both and is a count whenever real money follows it
-        # on the same row.  Taking it out first is what stops a quantity from
-        # being read as the unit price.
         quantity: Decimal | None = None
         qty_word: OcrWord | None = None
         for position, word in enumerate(words):
@@ -291,9 +289,7 @@ def classify_rows(result: OcrResult) -> list[ParsedRow]:
         amount_ids = {id(w) for w, _ in amounts}
         rest = [w for w in payload if id(w) not in amount_ids]
 
-        description = " ".join(
-            w.text for w in rest if w is not qty_word
-        ).strip(" :.-•|")
+        description = " ".join(w.text for w in rest).strip(" :.-|•")
 
         if quantity is None:
             match = _QTY_IN_TEXT_RE.search(description)

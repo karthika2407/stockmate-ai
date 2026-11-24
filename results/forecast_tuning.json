@@ -12,11 +12,11 @@
         "max_iter": 300,
         "min_samples_leaf": 40
       },
-      "global_wape": 0.5537,
-      "global_mae": 6.683,
-      "global_bias": -0.493,
-      "blend_wape": 0.5045,
-      "seconds": 16.2
+      "global_wape": 0.5546,
+      "global_mae": 6.694,
+      "global_bias": -0.459,
+      "blend_wape": 0.5056,
+      "seconds": 52.6
     },
     {
       "config": "squared_d6",
@@ -26,11 +26,11 @@
         "max_iter": 300,
         "min_samples_leaf": 40
       },
-      "global_wape": 0.5613,
-      "global_mae": 6.775,
-      "global_bias": -0.411,
-      "blend_wape": 0.5054,
-      "seconds": 14.4
+      "global_wape": 0.5645,
+      "global_mae": 6.814,
+      "global_bias": -0.335,
+      "blend_wape": 0.5041,
+      "seconds": 68.3
     },
     {
       "config": "absolute_d6",
@@ -40,11 +40,11 @@
         "max_iter": 300,
         "min_samples_leaf": 40
       },
-      "global_wape": 0.5524,
-      "global_mae": 6.667,
-      "global_bias": -1.04,
-      "blend_wape": 0.5009,
-      "seconds": 18.3
+      "global_wape": 0.5502,
+      "global_mae": 6.642,
+      "global_bias": -1.095,
+      "blend_wape": 0.5016,
+      "seconds": 59.7
     },
     {
       "config": "absolute_deep",
@@ -54,11 +54,11 @@
         "max_iter": 400,
         "min_samples_leaf": 20
       },
-      "global_wape": 0.5599,
-      "global_mae": 6.758,
-      "global_bias": -0.952,
-      "blend_wape": 0.5004,
-      "seconds": 23.0
+      "global_wape": 0.5523,
+      "global_mae": 6.667,
+      "global_bias": -0.965,
+      "blend_wape": 0.4992,
+      "seconds": 56.3
     },
     {
       "config": "absolute_slow",
@@ -73,7 +73,7 @@
       "global_mae": 6.67,
       "global_bias": -0.958,
       "blend_wape": 0.499,
-      "seconds": 31.6
+      "seconds": 140.3
     }
   ],
   "selected": "absolute_slow",

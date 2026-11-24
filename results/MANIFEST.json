@@ -1,0 +1,59 @@
+{
+  "started": "2026-11-24 22:06:03",
+  "mode": "full",
+  "python": "3.12.10",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "processor": "AMD64 Family 23 Model 104 Stepping 1, AuthenticAMD",
+  "runs": [
+    {
+      "name": "forecast_tuning",
+      "command": "python benchmarks/bench_tuning.py",
+      "returncode": 0,
+      "seconds": 422.0,
+      "ok": true
+    },
+    {
+      "name": "forecast",
+      "command": "python benchmarks/bench_forecast.py --skus 300 --origins 8",
+      "returncode": 0,
+      "seconds": 256.0,
+      "ok": true
+    },
+    {
+      "name": "audit",
+      "command": "python benchmarks/bench_audit.py --splits test validation train",
+      "returncode": 0,
+      "seconds": 1.7,
+      "ok": true
+    },
+    {
+      "name": "price_creep",
+      "command": "python benchmarks/bench_price_creep.py --skus 400",
+      "returncode": 0,
+      "seconds": 120.0,
+      "ok": true
+    },
+    {
+      "name": "replenishment",
+      "command": "python benchmarks/bench_replenishment.py --skus 150",
+      "returncode": 0,
+      "seconds": 17.0,
+      "ok": true
+    },
+    {
+      "name": "gst_rules",
+      "command": "python benchmarks/bench_gst_rules.py",
+      "returncode": 0,
+      "seconds": 0.6,
+      "ok": true
+    },
+    {
+      "name": "extraction",
+      "command": "python benchmarks/bench_extraction.py --limit 100",
+      "returncode": 0,
+      "seconds": 305.1,
+      "ok": true
+    }
+  ],
+  "finished": "2026-11-24 22:24:46"
+}

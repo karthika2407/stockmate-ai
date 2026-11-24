@@ -22,6 +22,26 @@ __all__ = ["Money", "ZERO", "parse_money", "quantize_half_up"]
 _NUM_RE = re.compile(r"-?\d+(?:[.,]\d+)*")
 
 
+def _group_indian(value: Decimal) -> str:
+    """Group digits the way an Indian bill prints them: 12,34,567.89.
+
+    Western grouping would read 1,234,567.89, which a shopkeeper has to stop
+    and translate. The last three digits stay together and everything above
+    them is grouped in pairs, so the number reads directly as lakhs and crores.
+    """
+    whole, _, frac = f"{value:.2f}".partition(".")
+    if len(whole) <= 3:
+        return f"{whole}.{frac}"
+    head, tail = whole[:-3], whole[-3:]
+    parts = []
+    while len(head) > 2:
+        parts.insert(0, head[-2:])
+        head = head[:-2]
+    if head:
+        parts.insert(0, head)
+    return f"{','.join(parts)},{tail}.{frac}"
+
+
 def quantize_half_up(value: Decimal, places: int = 0) -> Decimal:
     """Round ``value`` half-up away from zero to ``places`` decimal places."""
     exp = Decimal(1).scaleb(-places)
@@ -62,15 +82,16 @@ class Money:
         return float(self.rupees)
 
     def __str__(self) -> str:
-        return f"{self.rupees:,.2f}"
+        return _group_indian(abs(self.rupees)) if self.paise >= 0 else (
+            "-" + _group_indian(abs(self.rupees))
+        )
 
     def __repr__(self) -> str:
         return f"Money({self.paise}p = Rs {self})"
 
     def format(self, symbol: str = "Rs ") -> str:
         sign = "-" if self.paise < 0 else ""
-        whole = abs(self.rupees)
-        return f"{sign}{symbol}{whole:,.2f}"
+        return f"{sign}{symbol}{_group_indian(abs(self.rupees))}"
 
     # -------------------------------------------------------------- arithmetic
     def __add__(self, other: "Money") -> "Money":

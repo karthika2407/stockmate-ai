@@ -1,0 +1,15 @@
+services:
+  stockmate:
+    build: .
+    image: stockmate-ai:0.1.0
+    ports:
+      - "8000:8000"
+    environment:
+      # The explanation layer runs on templates unless a model is configured.
+      # Leaving this unset is the supported configuration and needs no key.
+      STOCKMATE_EXPLAINER: template
+    volumes:
+      # Results are written by the benchmarks, which run outside the container.
+      # Mounted read-only so a container cannot overwrite a measurement.
+      - ./results:/app/results:ro
+    restart: unless-stopped

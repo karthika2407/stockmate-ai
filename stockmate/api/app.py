@@ -146,7 +146,15 @@ def dashboard() -> dict:
     released = traps.slow_value + traps.dead_value
     protected = traps.expiry_value
 
+    # The dashboard carries the working for everything it shows.  Being able to
+    # expand any figure and see the arithmetic behind it is the whole promise,
+    # so the trail travels with the findings rather than sitting behind a second
+    # request the client might not make.
+    shown = STATE.findings[-25:]
+    trail = audit_trail(shown, STATE.ledger) + audit_trail(trap_findings[:25], STATE.ledger)
+
     return {
+        "audit_trail": trail,
         "headline": {
             "found": found.format(),
             "released": released.format(),
