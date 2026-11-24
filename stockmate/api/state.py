@@ -205,8 +205,10 @@ class ShopState:
                           if f.bucket == "found" and f.amount))
         if not self.findings:
             return "No bills audited yet. Send one and I will check it line by line."
+        count = len(self.bills)
         lines = [
-            f"Across {len(self.bills)} bills I have flagged {money.format()} worth of problems.",
+            f"Across {count} bill{'' if count == 1 else 's'} I have flagged "
+            f"{money.format()} worth of problems.",
             "",
         ]
         for f in sorted(self.findings, key=lambda f: -(f.amount.paise if f.amount else 0))[:5]:
