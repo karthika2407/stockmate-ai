@@ -1,9 +1,14 @@
 name: tests
 
 # The datasets are hundreds of megabytes and belong to their authors, so CI does
-# not download them. It runs the unit tests, which are written to need no data,
-# and checks that the service starts and answers. The benchmarks are run on a
-# developer machine and their output is committed under results/.
+# not download them. The unit tests are written to need no data; the one test
+# that reads a real CORD receipt skips itself when the shards are absent.
+#
+# This workflow is deliberately small. An earlier version also started the
+# service in the background and polled it with curl, which added a moving part
+# that was hard to diagnose from a failed run and proved nothing the API tests
+# do not already prove: tests/test_api.py exercises every endpoint through
+# FastAPI's TestClient.
 
 on:
   push:
@@ -20,14 +25,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-          cache: pip
 
-      # We pin opencv-python-headless, which needs no display libraries, but
+      # opencv-python-headless needs no display libraries, but
       # rapidocr-onnxruntime depends on the full opencv-python and pip installs
-      # it alongside. Whichever lands last provides cv2, so the runner needs the
-      # system libraries the full build links against or `import cv2` fails with
-      # libGL.so.1 and pytest exits during collection. The Dockerfile installs
-      # the same two packages for the same reason.
+      # it alongside. Whichever provides cv2 last decides what `import cv2`
+      # links against, so the runner gets the libraries the full build needs.
       - name: Install system libraries for OpenCV
         run: |
           sudo apt-get update
@@ -38,38 +40,28 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Show what is installed
+      - name: Report the environment
         run: |
-          python -c "import cv2, sys; print('cv2', cv2.__version__, 'on', sys.version)"
-          pip list
+          python --version
+          python -c "import cv2; print('cv2', cv2.__version__)"
+          python -c "import stockmate; print('stockmate', stockmate.__version__)"
 
+      # Collection errors are reported rather than aborting the run, so a failed
+      # job names the module that would not import instead of only exiting 2.
       - name: Run tests
-        run: pytest -q
+        run: pytest tests/ -q --continue-on-collection-errors -rf
 
-      - name: Check the service starts and answers
+      - name: Confirm the rupee guardrail refuses an unbacked amount
         run: |
-          uvicorn stockmate.api.app:app --port 8000 &
-          for i in $(seq 1 30); do
-            if curl -fsS http://127.0.0.1:8000/api/health > /dev/null; then break; fi
-            sleep 1
-          done
-          curl -fsS http://127.0.0.1:8000/api/health
-          curl -fsS http://127.0.0.1:8000/api/dashboard > /dev/null
-          curl -fsS "http://127.0.0.1:8000/api/plan?budget=15000" > /dev/null
-
-      - name: Confirm the rupee guardrail is active
-        run: |
-          python - <<'PY'
+          python -c "
           from stockmate.models import Finding
           from stockmate.money import Money
           from stockmate.store.ledger import InMemoryLedger, UnbackedAmountError, verify_finding
-
-          unbacked = Finding(finding_id="x", kind="k", title="t", detail="d",
-                             amount=Money.from_rupees("100.00"))
+          f = Finding(finding_id='x', kind='k', title='t', detail='d', amount=Money.from_rupees('100.00'))
           try:
-              verify_finding(unbacked, InMemoryLedger())
+              verify_finding(f, InMemoryLedger())
           except UnbackedAmountError:
-              print("guardrail active: an unbacked amount was refused")
+              print('guardrail active: an unbacked amount was refused')
           else:
-              raise SystemExit("guardrail did not fire; an amount could reach an owner unbacked")
-          PY
+              raise SystemExit('guardrail did not fire')
+          "
