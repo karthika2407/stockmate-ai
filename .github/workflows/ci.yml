@@ -1,14 +1,16 @@
 name: tests
 
 # The datasets are hundreds of megabytes and belong to their authors, so CI does
-# not download them. The unit tests are written to need no data; the one test
-# that reads a real CORD receipt skips itself when the shards are absent.
+# not download them. The unit tests need no data; the one test that reads a real
+# CORD receipt skips itself when the shards are absent.
 #
-# This workflow is deliberately small. An earlier version also started the
-# service in the background and polled it with curl, which added a moving part
-# that was hard to diagnose from a failed run and proved nothing the API tests
-# do not already prove: tests/test_api.py exercises every endpoint through
-# FastAPI's TestClient.
+# Every step below is a single command. Earlier versions of this file used a
+# shell heredoc to run a few lines of Python inline, which stacks YAML, bash and
+# Python quoting on top of each other. The job failed with bash's syntax-error
+# exit code while the project itself built and tested cleanly on Linux, and the
+# logs are not readable without signing in, so the cause was invisible. Anything
+# longer than one command now lives in a script under scripts/ that can be run
+# locally in the same form.
 
 on:
   push:
@@ -26,42 +28,17 @@ jobs:
         with:
           python-version: "3.12"
 
-      # opencv-python-headless needs no display libraries, but
-      # rapidocr-onnxruntime depends on the full opencv-python and pip installs
-      # it alongside. Whichever provides cv2 last decides what `import cv2`
-      # links against, so the runner gets the libraries the full build needs.
-      - name: Install system libraries for OpenCV
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends libgl1 libglib2.0-0
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
 
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+        run: pip install -r requirements.txt
 
       - name: Report the environment
-        run: |
-          python --version
-          python -c "import cv2; print('cv2', cv2.__version__)"
-          python -c "import stockmate; print('stockmate', stockmate.__version__)"
+        run: python scripts/report_env.py
 
-      # Collection errors are reported rather than aborting the run, so a failed
-      # job names the module that would not import instead of only exiting 2.
       - name: Run tests
         run: pytest tests/ -q --continue-on-collection-errors -rf
 
       - name: Confirm the rupee guardrail refuses an unbacked amount
-        run: |
-          python -c "
-          from stockmate.models import Finding
-          from stockmate.money import Money
-          from stockmate.store.ledger import InMemoryLedger, UnbackedAmountError, verify_finding
-          f = Finding(finding_id='x', kind='k', title='t', detail='d', amount=Money.from_rupees('100.00'))
-          try:
-              verify_finding(f, InMemoryLedger())
-          except UnbackedAmountError:
-              print('guardrail active: an unbacked amount was refused')
-          else:
-              raise SystemExit('guardrail did not fire')
-          "
+        run: python scripts/check_guardrail.py
